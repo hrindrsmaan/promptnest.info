@@ -1,30 +1,35 @@
-import React from "react";
+import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle/ThemeToggle";
 
-const Header = () => {
+export function Header() {
   return (
-    <header className="border-b border-gray-700 bg-[#1a1a1a]/95 backdrop-blur-sm sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-8 w-8 text-orange-500" />
-              <h1 className="text-xl font-bold text-white">Prompt Enhancer</h1>
-            </div>
-            <span className="hidden sm:block text-sm text-gray-400 border-l border-gray-600 pl-3 ml-3">
-              AI-Powered Prompt Enhancement
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-400 hidden md:block">
-              Powered by DeepSeek
-            </span>
-          </div>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 max-w-screen-2xl items-center">
+        <div className="mr-4 flex">
+          <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Sparkles className="h-6 w-6 text-blue-500" />
+            <span className="font-bold">Promptly</span>
+          </Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            <Link
+              href="#features"
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Features
+            </Link>
+            <Link
+              href="#enhancer"
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Enhancer
+            </Link>
+          </nav>
+        </div>
+        <div className="flex flex-1 items-center justify-end gap-2">
+          <ThemeToggle />
         </div>
       </div>
     </header>
   );
-};
-
-export default Header;
+}
