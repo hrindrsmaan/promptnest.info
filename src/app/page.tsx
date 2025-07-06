@@ -59,12 +59,9 @@ export default function HomePage() {
       }
 
       const data = await response.json();
-      // Log the response to the console for debugging
-      console.log("Received data from API:", data);
 
-      // Check if the expected data field exists before setting the state
-      if (data && data.enhancedPrompt) {
-        setEnhancedPrompt(data.enhancedPrompt);
+      if (data && data.enhanced) {
+        setEnhancedPrompt(data.enhanced);
       } else {
         throw new Error("API response did not contain an enhanced prompt.");
       }
@@ -90,7 +87,6 @@ export default function HomePage() {
 
   return (
     <main className="flex-1">
-      {/* Hero Section */}
       <section className="container mx-auto px-4 md:px-8 py-20 md:py-32 text-center">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
           Unlock the Full Potential of AI
@@ -109,7 +105,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="py-20 md:py-24 bg-secondary/50">
         <div className="container mx-auto px-4 md:px-8">
           <div className="text-center mb-12">
@@ -161,7 +156,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Enhancer Tool Section */}
       <section
         id="enhancer"
         className="container mx-auto px-4 md:px-8 py-20 md:py-24"
