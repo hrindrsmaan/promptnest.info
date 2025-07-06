@@ -1,102 +1,176 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Copy,
+  Wand2,
+  Sparkles,
+  Linkedin,
+  Github,
+  ExternalLink,
+} from "lucide-react";
+
+export default function PromptEnhancer() {
+  const [originalPrompt, setOriginalPrompt] = useState("");
+  const [enhancedPrompt, setEnhancedPrompt] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const enhancePrompt = async () => {
+    if (!originalPrompt.trim()) return;
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/enhance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: originalPrompt,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to enhance prompt");
+      }
+
+      setEnhancedPrompt(data.enhanced);
+    } catch (err) {
+      console.error("Enhancement failed:", err);
+      setError(err instanceof Error ? err.message : "Failed to enhance prompt");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
+      {/* Header */}
+      <header className="border-b border-gray-700 bg-[#1a1a1a]/95 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-8 w-8 text-orange-500" />
+                <h1 className="text-xl font-bold text-white">
+                  Prompt Enhancer
+                </h1>
+              </div>
+            </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-400 hidden md:block">
+                Powered by DeepSeek
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 p-6">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Hero Section */}
+          <div className="text-center py-8">
+            <h2 className="text-3xl font-bold text-white mb-3">
+              Transform Your Prompts
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Transform basic prompts into detailed, effective instructions that
+              get better AI responses
+            </p>
+          </div>
+
+          {/* Input Textarea */}
+          <div className="space-y-4">
+            <Textarea
+              placeholder="Enter your prompt here..."
+              value={originalPrompt}
+              onChange={(e) => setOriginalPrompt(e.target.value)}
+              className="min-h-[150px] text-base resize-none bg-[#2d2d2d] border-gray-600 text-white placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+
+            <div className="flex flex-col items-center gap-2">
+              <Button
+                onClick={enhancePrompt}
+                disabled={isLoading || !originalPrompt.trim()}
+                className="bg-orange-600 hover:bg-orange-700 text-white px-8 disabled:bg-gray-600 disabled:text-gray-400"
+              >
+                {isLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Enhancing...
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="h-4 w-4 mr-2" />
+                    Enhance Prompt
+                  </>
+                )}
+              </Button>
+
+              {error && <p className="text-red-400 text-sm">{error}</p>}
+            </div>
+          </div>
+
+          {/* Enhanced Output */}
+          {enhancedPrompt && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-400 uppercase tracking-wide">
+                  Enhanced
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => copyToClipboard(enhancedPrompt)}
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white h-8 px-3"
+                >
+                  <Copy className="h-3 w-3 mr-1" />
+                  Copy
+                </Button>
+              </div>
+
+              <Textarea
+                value={enhancedPrompt}
+                readOnly
+                className="min-h-[150px] text-base resize-none bg-[#2d2d2d] border-gray-600 text-white focus:ring-0 focus:border-gray-600"
+              />
+            </div>
+          )}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-700 bg-[#1a1a1a]/95 backdrop-blur-sm mt-auto">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-gray-400">
+              <span className="text-sm">Built by</span>
+              <a
+                href="https://www.linkedin.com/in/harindermaan/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors font-medium"
+              >
+                <Linkedin className="h-4 w-4" />
+                Harinder Singh
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
