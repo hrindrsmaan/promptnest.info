@@ -4,7 +4,7 @@ import Script from "next/script";
 
 const GA_TRACKING_ID = "G-3ZVVSHCVR3";
 
-export function GoogleAnalytics() {
+export default function GoogleAnalytics() {
   if (!GA_TRACKING_ID) {
     return null;
   }
@@ -52,6 +52,10 @@ export const trackPageView = (url: string) => {
 
 declare global {
   interface Window {
-    gtag: (command: string, targetId: string, config?: any) => void;
+    gtag: (
+      command: string,
+      targetId: string,
+      config?: Record<string, unknown>
+    ) => void;
   }
 }
