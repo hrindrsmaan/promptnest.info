@@ -65,8 +65,18 @@ export default function HomePage() {
       } else {
         throw new Error("API response did not contain an enhanced prompt.");
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      let message: string;
+
+      if (err instanceof Error) {
+        message = err.message;
+      } else if (typeof err === "string") {
+        message = err;
+      } else {
+        message = "An unexpected error occurred.";
+      }
+
+      setError(message);
     } finally {
       setIsLoading(false);
     }
