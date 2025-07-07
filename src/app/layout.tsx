@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { Header } from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import GoogleAnalytics from "@/components/GoogleAnalytics/GoogleAnalytics";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
           inter.variable
         )}
       >
+        <GoogleAnalytics />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
