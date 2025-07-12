@@ -128,7 +128,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Features Section */}
         <section id="features" className="py-20 md:py-24 bg-secondary/50">
           <div className="container mx-auto px-4 md:px-8">
             <div className="text-center mb-12">
@@ -136,7 +135,7 @@ export default function HomePage() {
                 Why Use an AI Prompt Optimizer?
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">
-                Enhance your prompts for <strong>ChatGPT</strong>,{" "}
+                Enhance your prompts for <strong>ChatGPT</strong>,
                 <strong>Claude AI</strong>, and other LLMs. Get more accurate,
                 creative, and relevant AI responses.
               </p>
@@ -176,7 +175,7 @@ export default function HomePage() {
                   Advanced Prompt Engineering
                 </h3>
                 <p className="text-muted-foreground">
-                  Leverage expert-level <strong>prompt engineering</strong>{" "}
+                  Leverage expert-level <strong>prompt engineering</strong>
                   techniques and optimize for any AI chatbot or LLM.
                 </p>
               </div>
@@ -194,7 +193,7 @@ export default function HomePage() {
               Free Prompt Generator & Rewriter
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-2">
-              Select your AI model and enter your prompt. Our{" "}
+              Select your AI model and enter your prompt. Our
               <strong>prompt quality booster</strong> will do the rest!
             </p>
           </div>
@@ -215,9 +214,9 @@ export default function HomePage() {
                   rows={7}
                 />
                 <span className="text-xs text-muted-foreground">
-                  Need ideas? Try: "Summarize this article for Claude AI" or
-                  "Generate SEO keywords for a tech blog (prompt optimizer for
-                  LLMs)"
+                  Need ideas? Try: Summarize this article for Claude AI or
+                  Generate SEO keywords for a tech blog (prompt optimizer for
+                  LLMs)
                 </span>
               </CardContent>
               <CardFooter className="justify-between items-end gap-4">
